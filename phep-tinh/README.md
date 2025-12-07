@@ -2,6 +2,16 @@
 
 Ứng dụng web đơn giản giúp các em học sinh lớp 4 luyện tập các phép tính cơ bản.
 
+## 🚀 Deploy ngay 1 click (từ điện thoại cũng được!)
+
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/vudinh155/docsmcp&base=phep-tinh)
+
+**Hoặc:**
+
+- **Cloudflare Pages:** [Click để deploy](https://dash.cloudflare.com/pages) → Connect to Git → Chọn repo `vudinh155/docsmcp` → Build output: `phep-tinh`
+- **Vercel:** [Click để deploy](https://vercel.com/import/git?s=https://github.com/vudinh155/docsmcp) → Root directory: `phep-tinh`
+- **GitHub Pages:** Đã được setup tự động qua GitHub Actions!
+
 ## Tính năng
 
 ✅ **Phép tính:**
