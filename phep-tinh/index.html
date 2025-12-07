@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luyện Toán Lớp 4</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 20px;
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .main-panel, .history-panel {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 32px;
+        }
+
+        h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .settings {
+            background: #f8f9ff;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .settings h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            font-weight: normal;
+            cursor: pointer;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            margin-right: 5px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        input[type="number"] {
+            width: 120px;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .range-inputs {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .exercise-area {
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .question {
+            font-size: 48px;
+            color: #333;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+
+        .answer-input {
+            width: 200px;
+            padding: 15px;
+            font-size: 32px;
+            text-align: center;
+            border: 3px solid #667eea;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .answer-input:focus {
+            outline: none;
+            border-color: #764ba2;
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
+        }
+
+        .result-message {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 15px;
+            min-height: 30px;
+        }
+
+        .result-message.correct {
+            color: #10b981;
+        }
+
+        .result-message.incorrect {
+            color: #ef4444;
+        }
+
+        .timer {
+            font-size: 20px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 5px;
+        }
+
+        button:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .history-table {
+            width: 100%;
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th {
+            background: #667eea;
+            color: white;
+            padding: 10px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        td {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+
+        tr:hover {
+            background: #f8f9ff;
+        }
+
+        .correct-mark {
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        .incorrect-mark {
+            color: #ef4444;
+            font-weight: bold;
+        }
+
+        .stats {
+            background: #f8f9ff;
+            padding: 20px;
+            border-radius: 15px;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .stat-label {
+            color: #666;
+        }
+
+        .stat-value {
+            color: #667eea;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .clear-btn {
+            background: #ef4444;
+            font-size: 14px;
+            padding: 10px 20px;
+        }
+
+        .clear-btn:hover {
+            background: #dc2626;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Main Panel -->
+        <div class="main-panel">
+            <h1>🎓 Luyện Toán Lớp 4</h1>
+
+            <!-- Settings -->
+            <div class="settings">
+                <h3>⚙️ Cài đặt</h3>
+
+                <div class="form-group">
+                    <label>Chọn phép tính:</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" class="operation" value="+" checked> Cộng (+)</label>
+                        <label><input type="checkbox" class="operation" value="-" checked> Trừ (-)</label>
+                        <label><input type="checkbox" class="operation" value="*" checked> Nhân (×)</label>
+                        <label><input type="checkbox" class="operation" value="/" checked> Chia hết (÷)</label>
+                        <label><input type="checkbox" class="operation" value="%" checked> Chia có dư</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Phạm vi số:</label>
+                    <div class="range-inputs">
+                        <span>Từ</span>
+                        <input type="number" id="minRange" value="1" min="0">
+                        <span>đến</span>
+                        <input type="number" id="maxRange" value="100" min="1">
+                    </div>
+                </div>
+
+                <button onclick="app.startNewExercise()">Bắt đầu bài mới</button>
+            </div>
+
+            <!-- Exercise Area -->
+            <div class="exercise-area">
+                <div class="timer" id="timer">Thời gian: 0 giây</div>
+                <div class="question" id="question">Nhấn "Bắt đầu bài mới" để bắt đầu</div>
+                <div id="answerSection" class="hidden">
+                    <input type="number" id="answerInput" class="answer-input" placeholder="Đáp án">
+                    <div id="remainderSection" class="hidden">
+                        <label>Số dư:</label>
+                        <input type="number" id="remainderInput" class="answer-input" placeholder="Dư" style="width: 150px; font-size: 24px;">
+                    </div>
+                    <div>
+                        <button onclick="app.checkAnswer()">Kiểm tra</button>
+                        <button onclick="app.skipExercise()">Bỏ qua</button>
+                    </div>
+                    <div class="result-message" id="resultMessage"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- History Panel -->
+        <div class="history-panel">
+            <h2>📊 Lịch sử</h2>
+
+            <div class="history-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Thời gian</th>
+                            <th>Đề bài</th>
+                            <th>Đáp án</th>
+                            <th>Kết quả</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyBody">
+                        <tr><td colspan="4">Chưa có bài nào</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h2>📈 Thống kê hôm nay</h2>
+            <div class="stats">
+                <div class="stat-item">
+                    <span class="stat-label">Tổng số bài:</span>
+                    <span class="stat-value" id="totalExercises">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Số bài đúng:</span>
+                    <span class="stat-value" id="correctAnswers">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Tỷ lệ đúng:</span>
+                    <span class="stat-value" id="accuracy">0%</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Thời gian trung bình:</span>
+                    <span class="stat-value" id="avgTime">0s</span>
+                </div>
+            </div>
+
+            <div style="margin-top: 20px; text-align: center;">
+                <button class="clear-btn" onclick="app.clearHistory()">Xóa lịch sử</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const app = {
+            currentExercise: null,
+            startTime: null,
+            timerInterval: null,
+            history: [],
+
+            init() {
+                this.loadHistory();
+                this.updateStats();
+
+                // Enter key to submit
+                document.getElementById('answerInput').addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.checkAnswer();
+                });
+                document.getElementById('remainderInput').addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.checkAnswer();
+                });
+            },
+
+            getSelectedOperations() {
+                const checkboxes = document.querySelectorAll('.operation:checked');
+                return Array.from(checkboxes).map(cb => cb.value);
+            },
+
+            getRange() {
+                const min = parseInt(document.getElementById('minRange').value) || 1;
+                const max = parseInt(document.getElementById('maxRange').value) || 100;
+                return { min, max };
+            },
+
+            randomInt(min, max) {
+                return Math.floor(Math.random() * (max - min + 1)) + min;
+            },
+
+            generateExercise() {
+                const operations = this.getSelectedOperations();
+                if (operations.length === 0) {
+                    alert('Vui lòng chọn ít nhất một phép tính!');
+                    return null;
+                }
+
+                const operation = operations[this.randomInt(0, operations.length - 1)];
+                const range = this.getRange();
+
+                let num1 = this.randomInt(range.min, range.max);
+                let num2 = this.randomInt(range.min, range.max);
+                let answer, remainder = null;
+                let question;
+
+                switch(operation) {
+                    case '+':
+                        answer = num1 + num2;
+                        question = `${num1} + ${num2} = ?`;
+                        break;
+                    case '-':
+                        // Đảm bảo kết quả không âm
+                        if (num1 < num2) [num1, num2] = [num2, num1];
+                        answer = num1 - num2;
+                        question = `${num1} - ${num2} = ?`;
+                        break;
+                    case '*':
+                        answer = num1 * num2;
+                        question = `${num1} × ${num2} = ?`;
+                        break;
+                    case '/':
+                        // Chia hết: tạo số chia hết
+                        num2 = this.randomInt(1, Math.min(20, range.max)); // Số chia nhỏ hơn
+                        num1 = num2 * this.randomInt(1, Math.floor(range.max / num2));
+                        answer = num1 / num2;
+                        question = `${num1} ÷ ${num2} = ?`;
+                        break;
+                    case '%':
+                        // Chia có dư
+                        num2 = this.randomInt(2, Math.min(20, range.max));
+                        answer = Math.floor(num1 / num2);
+                        remainder = num1 % num2;
+                        question = `${num1} ÷ ${num2} = ? (dư ?)`;
+                        break;
+                }
+
+                return { num1, num2, operation, answer, remainder, question };
+            },
+
+            startNewExercise() {
+                this.currentExercise = this.generateExercise();
+                if (!this.currentExercise) return;
+
+                document.getElementById('question').textContent = this.currentExercise.question;
+                document.getElementById('answerSection').classList.remove('hidden');
+                document.getElementById('answerInput').value = '';
+                document.getElementById('remainderInput').value = '';
+                document.getElementById('resultMessage').textContent = '';
+                document.getElementById('answerInput').focus();
+
+                // Show/hide remainder input for division with remainder
+                const remainderSection = document.getElementById('remainderSection');
+                if (this.currentExercise.operation === '%') {
+                    remainderSection.classList.remove('hidden');
+                } else {
+                    remainderSection.classList.add('hidden');
+                }
+
+                // Start timer
+                this.startTime = Date.now();
+                this.updateTimer();
+                if (this.timerInterval) clearInterval(this.timerInterval);
+                this.timerInterval = setInterval(() => this.updateTimer(), 100);
+            },
+
+            updateTimer() {
+                if (!this.startTime) return;
+                const elapsed = Math.floor((Date.now() - this.startTime) / 1000);
+                document.getElementById('timer').textContent = `Thời gian: ${elapsed} giây`;
+            },
+
+            checkAnswer() {
+                if (!this.currentExercise) return;
+
+                const userAnswer = parseInt(document.getElementById('answerInput').value);
+                const userRemainder = this.currentExercise.operation === '%'
+                    ? parseInt(document.getElementById('remainderInput').value)
+                    : null;
+
+                if (isNaN(userAnswer)) {
+                    alert('Vui lòng nhập đáp án!');
+                    return;
+                }
+
+                if (this.currentExercise.operation === '%' && isNaN(userRemainder)) {
+                    alert('Vui lòng nhập số dư!');
+                    return;
+                }
+
+                const isCorrect = this.currentExercise.operation === '%'
+                    ? (userAnswer === this.currentExercise.answer && userRemainder === this.currentExercise.remainder)
+                    : (userAnswer === this.currentExercise.answer);
+
+                const timeSpent = Math.floor((Date.now() - this.startTime) / 1000);
+
+                // Show result
+                const resultMessage = document.getElementById('resultMessage');
+                if (isCorrect) {
+                    resultMessage.textContent = '🎉 Chính xác! Giỏi lắm!';
+                    resultMessage.className = 'result-message correct';
+                } else {
+                    let correctAnswer = this.currentExercise.operation === '%'
+                        ? `${this.currentExercise.answer} dư ${this.currentExercise.remainder}`
+                        : this.currentExercise.answer;
+                    resultMessage.textContent = `❌ Sai rồi! Đáp án đúng là: ${correctAnswer}`;
+                    resultMessage.className = 'result-message incorrect';
+                }
+
+                // Save to history
+                const userAnswerText = this.currentExercise.operation === '%'
+                    ? `${userAnswer} dư ${userRemainder}`
+                    : userAnswer.toString();
+
+                this.addToHistory({
+                    question: this.currentExercise.question,
+                    userAnswer: userAnswerText,
+                    correctAnswer: this.currentExercise.operation === '%'
+                        ? `${this.currentExercise.answer} dư ${this.currentExercise.remainder}`
+                        : this.currentExercise.answer.toString(),
+                    isCorrect,
+                    timeSpent,
+                    timestamp: new Date().toISOString()
+                });
+
+                // Stop timer
+                clearInterval(this.timerInterval);
+
+                // Auto start new exercise after 2 seconds
+                setTimeout(() => this.startNewExercise(), 2000);
+            },
+
+            skipExercise() {
+                if (!this.currentExercise) return;
+
+                const timeSpent = Math.floor((Date.now() - this.startTime) / 1000);
+
+                this.addToHistory({
+                    question: this.currentExercise.question,
+                    userAnswer: '(Bỏ qua)',
+                    correctAnswer: this.currentExercise.operation === '%'
+                        ? `${this.currentExercise.answer} dư ${this.currentExercise.remainder}`
+                        : this.currentExercise.answer.toString(),
+                    isCorrect: false,
+                    timeSpent,
+                    timestamp: new Date().toISOString()
+                });
+
+                clearInterval(this.timerInterval);
+                this.startNewExercise();
+            },
+
+            addToHistory(record) {
+                this.history.unshift(record);
+                this.saveHistory();
+                this.updateHistoryTable();
+                this.updateStats();
+            },
+
+            updateHistoryTable() {
+                const tbody = document.getElementById('historyBody');
+                if (this.history.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="4">Chưa có bài nào</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = this.history.map(record => {
+                    const time = new Date(record.timestamp);
+                    const timeStr = `${time.getHours()}:${String(time.getMinutes()).padStart(2, '0')}:${String(time.getSeconds()).padStart(2, '0')}`;
+                    const resultClass = record.isCorrect ? 'correct-mark' : 'incorrect-mark';
+                    const resultText = record.isCorrect ? '✓' : '✗';
+
+                    return `
+                        <tr>
+                            <td>${timeStr}<br><small>${record.timeSpent}s</small></td>
+                            <td>${record.question}</td>
+                            <td>${record.userAnswer}<br><small>(${record.correctAnswer})</small></td>
+                            <td class="${resultClass}">${resultText}</td>
+                        </tr>
+                    `;
+                }).join('');
+            },
+
+            updateStats() {
+                const today = new Date().toDateString();
+                const todayRecords = this.history.filter(r =>
+                    new Date(r.timestamp).toDateString() === today
+                );
+
+                const total = todayRecords.length;
+                const correct = todayRecords.filter(r => r.isCorrect).length;
+                const accuracy = total > 0 ? Math.round((correct / total) * 100) : 0;
+                const avgTime = total > 0
+                    ? Math.round(todayRecords.reduce((sum, r) => sum + r.timeSpent, 0) / total)
+                    : 0;
+
+                document.getElementById('totalExercises').textContent = total;
+                document.getElementById('correctAnswers').textContent = correct;
+                document.getElementById('accuracy').textContent = accuracy + '%';
+                document.getElementById('avgTime').textContent = avgTime + 's';
+            },
+
+            saveHistory() {
+                localStorage.setItem('mathHistory', JSON.stringify(this.history));
+            },
+
+            loadHistory() {
+                const saved = localStorage.getItem('mathHistory');
+                this.history = saved ? JSON.parse(saved) : [];
+                this.updateHistoryTable();
+            },
+
+            clearHistory() {
+                if (confirm('Bạn có chắc muốn xóa toàn bộ lịch sử?')) {
+                    this.history = [];
+                    this.saveHistory();
+                    this.updateHistoryTable();
+                    this.updateStats();
+                }
+            }
+        };
+
+        // Initialize app when page loads
+        window.addEventListener('DOMContentLoaded', () => app.init());
+    </script>
+</body>
+</html>
